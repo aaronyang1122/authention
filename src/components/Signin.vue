@@ -5,11 +5,11 @@
 			<div class="wrapper text-center">
 				<strong>后台管理系统</strong>
 			</div>
-			<form name="form" class="form-validation" @submit.prevent="onSubmit">
+			<form name="form" class="form-validation" @submit.prevent>
 				<div class="text-danger wrapper text-center"></div>
 				<div class="list-group list-group-sm">
 					<div class="list-group-item">
-						<match-box :clear-button="form.username.clear" :placeholder="form.username.placeholder" v-model="form.username.value"></match-box>
+						<match-box :clear-button="form.username.clear" :placeholder="form.username.placeholder" v-model="form.username.value" :required="true"></match-box>
 					</div>
 					<div class="list-group-item">
 						<match-box :clear-button="form.password.clear" :placeholder="form.password.placeholder" v-model="form.password.value" :type="form.password.type"></match-box>

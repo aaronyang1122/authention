@@ -3,7 +3,7 @@
 	<section :class="[className,{error: error.show}]">
 		<label :for='randId'v-if="showLabel">{{label}}</label>
 		<div class="input-wrap">
-			<input class="form-control no-border no-bg" :placeholder="placeholder" :id="randId" v-type="type" v-model='currentValue' @blur="checkValue()" />
+			<input class="form-control no-border no-bg" :placeholder="placeholder" :id="randId" v-type="type" v-model='currentValue' v-required="required" />
 			<span class="simulated-placeholder" v-if="simulatedPlaceholder" v-show="placeholderTriger">{{placeholder}}</span>
 			<a href="" class="icon-close" @click.prevent v-clear="currentValue" v-show="showClear"></a>
       <transition name='slide-fade'>
@@ -27,8 +27,7 @@
 				type: String
 			},
 			required: {
-				type: Boolean,
-				default: false
+				type: Boolean
 			},
 			placeholder: {
 				type: String,
@@ -123,18 +122,15 @@
 		directives: {
 			required: {
 				bind (el, binding) {
-					if (_.isEmpty(binding.value)) return;
-					if (binding.value.required) {
-						if (typeof binding.value.required !== 'boolean') {
-							console.warn("the param type must be 'Boolean'");
-							return;
-						}
+//					console.log(binding.value)
+					if (binding.value === true) {
 						el.setAttribute('required', 'required');
 					}
 				}
 			},
 			clear: {
 				bind (el, binding, vnode) {
+					console.log(binding.value)
 					el.addEventListener('click', function () {
 					  el.parentNode.firstChild.focus();
 						vnode.context.currentValue = '';
@@ -155,12 +151,7 @@
 				} else {
 					this.placeholderTriger = true;
 				}
-				
-				if (this.required) {
-					this._isEmpty(this._isMin);
-				} else {
-					this._isMin();
-				}
+				// dispath value
 				this.updateValue(val);
 			}
 		},
