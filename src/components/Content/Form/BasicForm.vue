@@ -1,0 +1,23 @@
+<template>
+	<div class="panel panel-default">
+    <div class="panel-heading font-bold">Basic form</div>
+    <div class="panel-body">
+      <form role="form">
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" class="form-control" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" placeholder="Password">
+        </div>
+        <div class="checkbox">
+          <label class="i-checks">
+            <input type="checkbox" checked="" disabled=""><i></i> Check me out
+          </label>
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</template>

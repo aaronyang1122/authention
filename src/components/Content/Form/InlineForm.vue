@@ -1,0 +1,31 @@
+<template>
+	<div class="panel panel-default">
+    <div class="panel-heading font-bold">                  
+      Inline form
+    </div>
+    <div class="panel-body">
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputEmail2">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputPassword2">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+        </div>
+        <div class="checkbox m-l m-r-xs">
+          <label class="i-checks">
+            <input type="checkbox"><i></i> Remember me
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">Sign in</button>
+        <span ng-controller="ModalDemoCtrl">
+          <script type="text/ng-template" id="myModalContent.html">
+            <div ng-include="'tpl/modal.form.html'"></div>
+          </script>
+          <button class="btn btn-success" ng-click="open('lg')">Form in a modal</button>
+        </span>
+      </form>
+    </div>
+  </div>
+</template>
