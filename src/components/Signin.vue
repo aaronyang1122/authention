@@ -5,8 +5,8 @@
 			<div class="wrapper text-center">
 				<strong>后台管理系统</strong>
 			</div>
-			<form name="form" class="form-validation" @submit.prevent>
-				<div class="text-danger wrapper text-center"></div>
+			<form name="form" class="form-validation" @submit.prevent="submit">
+				<div class="text-danger wrapper text-center">{{message.error}}</div>
 				<div class="list-group list-group-sm">
 					<div class="list-group-item">
 						<match-box :clear-button="form.username.clear" :placeholder="form.username.placeholder" v-model="form.username.value" :required="true"></match-box>
@@ -45,14 +45,24 @@
 						clear: true,
 						type: 'password'
 					}
-				}
+				},
+				message: {
+					error: ''
+				},
+				test: ''
 			}
 		},
 		components: {
 			matchBox
 		},
+		computed: {
+			isIE9 () {
+				// ie9 don't have the prop 'required'
+     		return !('required' in document.createElement('input'));
+     }
+		},
 		methods: {
-			handleValidate: function (e) {
+			handleValidate (e) {
         var self = this;
         // get validity instance
         var $validity = e.target.$validity;
@@ -61,9 +71,23 @@
           // keep validation result from result property of validity instance
           self.result = $validity.result
         })
-     	}
-		},
+    	},
+    	submit () {
+    		this.$store.dispatch('save', [this.form.username.value, this.form.password.value]);
+    		this.test = this.$store.state.user.token
+    		this.message.error = this.form.username.value === '' || this.form.password.value === '' ? '用户名、密码不能为空' : '';
+	    }
+   },
 		watch: {
+			'form.username.value' (val, oldVal) {
+				console.log(val)
+			},
+			'test' (val, oldVal) {
+				console.log(val)
+			}
+		},
+		created () {
+//			console.log(this.$store.getters.doneTodos)
 		}
 	}
 

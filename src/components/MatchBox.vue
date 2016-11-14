@@ -3,7 +3,7 @@
 	<section :class="[className,{error: error.show}]">
 		<label :for='randId'v-if="showLabel">{{label}}</label>
 		<div class="input-wrap">
-			<input class="form-control no-border no-bg" :placeholder="placeholder" :id="randId" v-type="type" v-model='currentValue' v-required="required" />
+			<input class="form-control no-border no-bg" :placeholder="placeholder" :id="randId" v-type="type" :value="value" v-model='currentValue' v-required="required" />
 			<span class="simulated-placeholder" v-if="simulatedPlaceholder" v-show="placeholderTriger">{{placeholder}}</span>
 			<a href="" class="icon-close" @click.prevent v-clear="currentValue" v-show="showClear"></a>
       <transition name='slide-fade'>
@@ -20,6 +20,7 @@
 	export default {
 //		props: ['className', 'init', 'required', 'label', 'placeholder', 'clearButton', 'minLength', 'suggestion'],
 		props: {
+			value: null,
 			label: {
 				type: String
 			},
@@ -53,7 +54,7 @@
 		data () {
 			return {
 				placeholderTriger: true,
-				currentValue: '',
+				currentValue: this.value,
 				error: {
 				  show: false,
 				  text: ''
@@ -130,7 +131,6 @@
 			},
 			clear: {
 				bind (el, binding, vnode) {
-					console.log(binding.value)
 					el.addEventListener('click', function () {
 					  el.parentNode.firstChild.focus();
 						vnode.context.currentValue = '';
