@@ -1,63 +1,37 @@
 import * as types from '../mutation-types';
 
 const state = {
-  added: [],
-  checkoutStatus: null
+  token: '',
+  custom: {
+  	username: '',
+  	password: '',
+  	role: '',
+  	isAdmin: false
+  }
 }
 
 // getters
 const getters = {
-  checkoutStatus: state => state.checkoutStatus
-}
-
-// actions
-const actions = {
-  checkout ({ commit, state }, products) {
-    const savedCartItems = [...state.added]
-    commit(types.CHECKOUT_REQUEST)
-    shop.buyProducts(
-      products,
-      () => commit(types.CHECKOUT_SUCCESS),
-      () => commit(types.CHECKOUT_FAILURE, { savedCartItems })
-    )
-  }
+  user: state => state.user
 }
 
 // mutations
 const mutations = {
-  [types.ADD_TO_CART] (state, { id }) {
-    state.lastCheckout = null
-    const record = state.added.find(p => p.id === id)
-    if (!record) {
-      state.added.push({
-        id,
-        quantity: 1
-      })
-    } else {
-      record.quantity++
+  [types.SAVE_TOKEN] (state, str) {
+    state.token = str
+  },
+
+  [types.SET_USER] (state, { obj }) {
+    for (let key in state.custom) {
+    	if (obj.hasOwnProperty(key)) {
+    		state.custom[key] = obj[key];
+    	}
     }
-  },
-
-  [types.CHECKOUT_REQUEST] (state) {
-    // clear cart
-    state.added = []
-    state.checkoutStatus = null
-  },
-
-  [types.CHECKOUT_SUCCESS] (state) {
-    state.checkoutStatus = 'successful'
-  },
-
-  [types.CHECKOUT_FAILURE] (state, { savedCartItems }) {
-    // rollback to the cart saved before sending the request
-    state.added = savedCartItems
-    state.checkoutStatus = 'failed'
   }
 }
 
 export default {
   state,
   getters,
-  actions,
   mutations
 }

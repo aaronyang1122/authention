@@ -73,8 +73,8 @@
         })
     	},
     	submit () {
-    		this.$store.dispatch('save', [this.form.username.value, this.form.password.value]);
-    		this.test = this.$store.state.user.token
+    		this.$store.dispatch('savetoken', [this.form.username.value, this.form.password.value]);
+    		this.test = this.$store.state.login.token
     		this.message.error = this.form.username.value === '' || this.form.password.value === '' ? '用户名、密码不能为空' : '';
 	    }
    },
@@ -87,7 +87,7 @@
 			}
 		},
 		created () {
-//			console.log(this.$store.getters.doneTodos)
+			console.log(this.$store.getters.doneTodos)
 		}
 	}
 
