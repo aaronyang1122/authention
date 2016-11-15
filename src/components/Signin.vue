@@ -87,7 +87,7 @@
 			}
 		},
 		created () {
-			console.log(this.$store.getters.doneTodos)
+//			console.log(this.$store.getters.doneTodos)
 		}
 	}
 
