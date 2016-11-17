@@ -1,12 +1,12 @@
 import * as types from '../mutation-types';
 
 const state = {
-  token: '',
+  token: null,
   custom: {
   	username: '',
   	password: '',
   	role: '',
-  	isAdmin: false
+  	enabled: false
   }
 }
 
@@ -15,13 +15,22 @@ const getters = {
   user: state => state.user
 }
 
+// actions
+const actions = {
+  setcustom ({ commit }, obj) {
+		commit(types.SET_CUSTOM, obj)
+	}
+}
+
 // mutations
 const mutations = {
-  [types.SAVE_TOKEN] (state, str) {
+	// set token
+  [types.SET_TOKEN] (state, str) {
     state.token = str
   },
 
-  [types.SET_USER] (state, { obj }) {
+	// set custom obj
+  [types.SET_CUSTOM] (state, obj) {
     for (let key in state.custom) {
     	if (obj.hasOwnProperty(key)) {
     		state.custom[key] = obj[key];
@@ -33,5 +42,6 @@ const mutations = {
 export default {
   state,
   getters,
+  actions,
   mutations
 }

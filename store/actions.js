@@ -1,11 +1,9 @@
-import {toBase64} from '../api/api';
 import * as types from './mutation-types'
 
-const savetoken = ({ commit }, payload) => {
-	console.log(payload)
-	commit(types.SAVE_TOKEN, toBase64(payload))
+const settoken = ({ commit }, str) => {
+	commit(types.SET_TOKEN, str)
 }
 
 export {
-	savetoken
+	settoken
 }

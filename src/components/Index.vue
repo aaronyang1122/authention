@@ -56,7 +56,6 @@
 	import RingLoader from 'vue-spinner/src/RingLoader'
 	import BounceLoader from 'vue-spinner/src/BounceLoader'
 	import DotLoader from 'vue-spinner/src/DotLoader'
-	
 	export default {
 	  components: {
 	    HeaderWrap,
@@ -79,6 +78,9 @@
 	    RingLoader,
 	    BounceLoader,
 	    DotLoader
+	  },
+	  created () {
+	  	console.log(this.$route)
 	  }
 	}
 </script>

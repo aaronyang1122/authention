@@ -12,7 +12,7 @@
 						<match-box :clear-button="form.username.clear" :placeholder="form.username.placeholder" v-model="form.username.value" :required="true"></match-box>
 					</div>
 					<div class="list-group-item">
-						<match-box :clear-button="form.password.clear" :placeholder="form.password.placeholder" v-model="form.password.value" :type="form.password.type"></match-box>
+						<match-box :clear-button="form.password.clear" :placeholder="form.password.placeholder" v-model="form.password.value" :required="true" :type="form.password.type"></match-box>
 					</div>
 				</div>
 				<button type="submit" class="btn btn-lg btn-primary btn-block" >登 录</button>
@@ -28,7 +28,11 @@
 <script>
 	import Vue from 'vue';
 	import matchBox from './MatchBox';
+	import VueResource from 'vue-resource';
+	import { toBase64, apiURL } from '../../api/api';
 
+	Vue.use(VueResource);
+	
 	export default {
 		data () {
 			return {
@@ -73,9 +77,64 @@
         })
     	},
     	submit () {
-    		this.$store.dispatch('savetoken', [this.form.username.value, this.form.password.value]);
-    		this.test = this.$store.state.login.token
-    		this.message.error = this.form.username.value === '' || this.form.password.value === '' ? '用户名、密码不能为空' : '';
+    		this.test = this.$store.state.login.custom
+    		// ie9
+    		if (this.form.username.value === '' || this.form.password.value === '') {
+    			// throw error
+    			this.message.error = '用户名、密码不能为空';
+    		} else {
+    			this.message.error = '';
+    			// 先获取 token 再获取用户资料信息
+    			this.login().then(function () {
+    				this.$router.push({name: 'index'})
+    			}.bind(this));
+    			// 登录跳转
+    		}
+	    },
+	    login () {
+	    	// 登录获取 token
+	    	this.$http.get(apiURL + '/', {
+  				headers: {
+  					'Authorization': 'Basic ' + toBase64([this.form.username.value, this.form.password.value])
+  				},
+  				timeout: 500
+  			}).then((response) => {
+  				if (response.status === 200) {
+  					// set token to the store
+  					this.$store.dispatch('settoken', response.headers.get('x-auth-token'));
+  					console.log(this.$store.state.login.token)
+  				}
+  			}).catch(function (e) {
+  				if (!e.ok) {
+  					this.message.error = '用户名密码错误，或账户不存在';
+  				}
+  			})
+  			// login.then()
+  			this.then = function (callback) {
+	    		if (this.$store.state.login.token !== null) {
+	    			// Configuration token
+	    			this.$http.headers.common['x-auth-token'] = this.$store.state.login.token;
+	    			callback();
+	    		} else {
+	    			console.warn('token 获取失败 或 token 为 null 请检查 response headers');
+	    		}
+	    	}
+  			return this;
+	    },
+	    getProfile () {
+	    	// 返回当前用户属性
+	    	this.$http.get(apiURL + '/profile', {
+	    		timeout: 500
+	    	}).then((response) => {
+	    		if (response.status === 200) {
+	    			// set custom to the store
+	    			this.$store.dispatch('setcustom', response.body);
+	    		}
+	    	}).catch(function (e) {
+  				if (!e.ok) {
+  					this.message.error = '获取用户信息错误';
+  				}
+  			});
 	    }
    },
 		watch: {

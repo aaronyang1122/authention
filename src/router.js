@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Index from './components/Index';
 import SignIn from './components/Signin';
+import Store from '../store/index';
 
 Vue.use(VueRouter);
 
@@ -21,8 +22,8 @@ const route = new VueRouter({
 });
 
 route.beforeEach((to, from, next) => {
-	console.log(to);
-	if (to.name !== 'signin') {
+	// if store has no token there is not allow to login
+	if (to.name !== 'signin' && Store.state.login.token === null) {
 		next('/signin');
 	} else {
 		next();
