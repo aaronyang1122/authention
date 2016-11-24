@@ -13,7 +13,6 @@
 	</section>
 </template>
 <script>
-	import _ from 'lodash';
 	import randString from 'randString';
 	import {coerce} from '../utils.js'
 

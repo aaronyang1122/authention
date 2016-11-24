@@ -3,12 +3,6 @@
 		<!-- buttons -->
     <buttons></buttons>
     <!-- / buttons -->
-    <!-- links -->
-    <links></links>
-    <!-- / links -->
-    <!-- search -->
-    <search></search>
-    <!-- /search -->
     <!-- nabar -->
     <nabar></nabar>
     <!-- / nabar -->
@@ -16,14 +10,10 @@
 </template>
 <script>
 	import Buttons from './Buttons'
-	import Links from './Link'
-	import Search from './Search'
 	import Nabar from './Nabar'
 	export default {
 	  components: {
 	    Buttons,
-	    Links,
-	    Search,
 	    Nabar
 	  }
 	}

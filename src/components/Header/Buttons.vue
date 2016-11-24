@@ -4,8 +4,5 @@
       <i class="fa fa-dedent fa-fw text"></i>
       <i class="fa fa-indent fa-fw text-active"></i>
     </a>
-    <a href="#" class="btn no-shadow navbar-btn" ui-toggle-class="show" target="#aside-user">
-      <i class="icon-user fa-fw"></i>
-    </a>
   </div>
 </template>

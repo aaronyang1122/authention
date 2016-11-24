@@ -26,12 +26,9 @@
 	</div>
 </template>
 <script>
-	import Vue from 'vue';
 	import matchBox from './MatchBox';
-	import VueResource from 'vue-resource';
-	import { toBase64, apiURL } from '../../api/api';
-
-	Vue.use(VueResource);
+	import { toBase64, apiURL, checkStatus, parseJSON } from '../../api/api';
+	import 'whatwg-fetch';
 	
 	export default {
 		data () {
@@ -85,58 +82,79 @@
     		} else {
     			this.message.error = '';
     			// 先获取 token 再获取用户资料信息
-    			this.login().then(function () {
-    				this.$router.push({name: 'index'})
-    			}.bind(this));
-    			// 登录跳转
+    			this.login()
+    			.then(
+    				() => {
+    					// success
+    					// getProfile
+    					this.getProfile()
+    						.then(
+    							() => {
+    								// success 
+    								// 跳转首页
+    								this.$router.push({name: 'profile'})
+    							},
+    							(err) => {
+    								// failed
+	    							console.warn(err)
+    							}
+    						);
+	    			}, 
+	    			(err) => {
+	    				// failed
+	    				console.warn(err)
+	    			}
+	    		);
     		}
 	    },
 	    login () {
-	    	// 登录获取 token
-	    	this.$http.get(apiURL + '/', {
-  				headers: {
-  					'Authorization': 'Basic ' + toBase64([this.form.username.value, this.form.password.value])
-  				},
-  				timeout: 500
-  			}).then((response) => {
-  				if (response.status === 200) {
-  					// set token to the store
-  					this.$store.dispatch('settoken', response.headers.get('x-auth-token'));
-  					console.log(this.$store.state.login.token)
-  				}
-  			}).catch(function (e) {
-  				if (!e.ok) {
-  					this.message.error = '用户名密码错误，或账户不存在';
-  				}
-  			})
-  			// login.then()
-  			this.then = function (callback) {
-	    		if (this.$store.state.login.token !== null) {
-	    			// Configuration token
-	    			this.$http.headers.common['x-auth-token'] = this.$store.state.login.token;
-	    			callback();
-	    		} else {
-	    			console.warn('token 获取失败 或 token 为 null 请检查 response headers');
-	    		}
-	    	}
-  			return this;
+	    	return new Promise((resolve, reject) => {
+	    		// 登录获取 token
+					fetch(apiURL + '/', {
+					  method: 'GET',
+					  headers: {
+					    'Authorization': 'Basic ' + toBase64([this.form.username.value, this.form.password.value])
+					  }
+					})
+						.then(checkStatus)
+						.then(response => {
+							this.$store.dispatch('settoken', response.headers.get('x-auth-token'));
+							// resolve
+							resolve();
+						})
+						.catch(error => {
+					  	if (error.status === 401) {
+					  		this.message.error = '用户名密码错误，或账户不存在';
+					  	} else {
+					  		console.warn(error);
+					  	}
+					  	// reject
+					  	reject(error);
+					  })
+	    	});
 	    },
 	    getProfile () {
-	    	// 返回当前用户属性
-	    	this.$http.get(apiURL + '/profile', {
-	    		timeout: 500
-	    	}).then((response) => {
-	    		if (response.status === 200) {
-	    			// set custom to the store
-	    			this.$store.dispatch('setcustom', response.body);
-	    		}
-	    	}).catch(function (e) {
-  				if (!e.ok) {
-  					this.message.error = '获取用户信息错误';
-  				}
-  			});
+	    	return new Promise((resolve, reject) => {
+	    		fetch(apiURL + '/profile', {
+					  method: 'GET',
+					  headers: {
+					    'x-auth-token': this.$store.state.login.token
+					  }
+					})
+	    			.then(checkStatus)
+	    			.then(parseJSON)
+	    			.then(data => {
+							this.$store.dispatch('setcustom', data);
+							resolve();
+						})
+	    			.catch(error => {
+	    				this.message.error = '获取用户信息错误';
+					  	// reject
+					  	reject(error);
+					  })
+	    	});
 	    }
-   },
+   	},
 		watch: {
 			'form.username.value' (val, oldVal) {
 				console.log(val)

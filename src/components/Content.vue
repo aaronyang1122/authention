@@ -2,12 +2,7 @@
 	<div id="content" class="app-content" role="main">
   	<div class="app-content-body ">
   		<!-- content -->
-  		<slot></slot>
-  		<form-temp></form-temp>
-  		<foo-table></foo-table>
-  		<static-table></static-table>
-  		<chart></chart>
-  		
+  		<router-view></router-view>
   		<!-- / content -->
 		</div>
   </div>

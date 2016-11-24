@@ -1,9 +1,7 @@
 +function ($) {
-
   $(function(){
-
       // nav
-      $(document).on('click', '[ui-nav] a', function (e) {
+      $(document).on('click', '.nav a', function (e) {
         var $this = $(e.target), $active;
         $this.is('a') || ($this = $this.closest('a'));
         
