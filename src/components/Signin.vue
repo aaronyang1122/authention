@@ -49,8 +49,7 @@
 				},
 				message: {
 					error: ''
-				},
-				test: ''
+				}
 			}
 		},
 		components: {
@@ -92,7 +91,7 @@
     							() => {
     								// success 
     								// 跳转首页
-    								this.$router.push({name: 'profile'})
+    								this.$router.push({name: 'check'})
     							},
     							(err) => {
     								// failed
@@ -156,12 +155,9 @@
 	    }
    	},
 		watch: {
-			'form.username.value' (val, oldVal) {
-				console.log(val)
-			},
-			'test' (val, oldVal) {
-				console.log(val)
-			}
+//			'form.username.value' (val, oldVal) {
+//				console.log(val)
+//			}
 		},
 		created () {
 //			console.log(this.$store.getters.doneTodos)

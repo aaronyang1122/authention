@@ -4,7 +4,6 @@
 		  <h1 class="m-n font-thin h3">修改登录密码</h1>
 		</div>
 		<div class="wrapper-md">
-			<div class="text-danger wrapper text-center">{{ error }}</div>
 		  <div class="panel panel-default">
 		    <div class="panel-body">
 		      <form @submit.prevent="submit" v-loading.fullscreen.lock="loading" element-loading-text="拼命加载中">
@@ -14,7 +13,7 @@
 		        </div>
 		        <div class="checkbox">
 		          <label class="i-checks">
-		            <input type="checkbox" value="dasda" v-model="showPWD"><i></i> 显示密码
+		            <input type="checkbox" v-model="showPWD"><i></i> 显示密码
 		          </label>
 		        </div>
 		        <button type="submit" class="btn btn-sm btn-primary">提交</button>
@@ -43,7 +42,6 @@
 		},
 		data () {
 			return {
-				error: '',
 				newPWD: '',
 				showPWD: false,
 				alert: true,
@@ -53,9 +51,11 @@
 		methods: {
 			submit () {
 				if (this.newPWD === '') {
-					this.error = '新密码不能为空';
+					this.$message({
+	          message: '用户名密码不为空',
+	          type: 'error'
+	        });
 				} else {
-					this.error = '';
 					this.updatePWD();
 				}
 			},
@@ -82,7 +82,10 @@
 							this.successMSG();
 						})
 						.catch(error => {
-							this.error = error;
+							this.$message({
+			          message: error,
+			          type: 'error'
+			        });
 					  	console.warn(error);
 					  })
 			},

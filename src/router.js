@@ -6,6 +6,9 @@ import Profile from './components/Profile';
 import Token from './components/Token';
 import Check from './components/Token/Check';
 import Unbind from './components/Token/Unbind';
+import Administration from './components/Administration';
+import AddUser from './components/Administration/AddUser';
+import UserList from './components/Administration/UserList';
 import Store from '../store/index';
 
 Vue.use(VueRouter);
@@ -41,6 +44,23 @@ const route = new VueRouter({
         			path: 'unbind',
         			name: 'unbind',
         			component: Unbind
+        		}
+        	]
+        },
+        {
+        	path: 'administration',
+        	name: 'administration',
+        	component: Administration,
+        	children: [
+        		{
+        			path: 'adduser',
+        			name: 'adduser',
+        			component: AddUser
+        		},
+        		{
+        			path: 'userlist',
+        			name: 'userlist',
+        			component: UserList
         		}
         	]
         }
