@@ -104,7 +104,6 @@
 	 },
 	 created () {
 	 		this.tags[this.$route.name] = true;
-	 		console.log(this.tags[this.$route.name])
 		}
 	}
 </script>

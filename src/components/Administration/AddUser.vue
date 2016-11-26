@@ -103,7 +103,7 @@
 		},
 		watch: {
 			'user.role' (val, oldVal) {
-				console.log(this._role)
+//				console.log(this._role)
 			}
 		}
 	}
