@@ -11,11 +11,7 @@
             <!-- dropdown -->
             <ul class="dropdown-menu animated fadeInRight w">
               <li>
-                <a ui-sref="app.page.profile">账号信息</a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a ui-sref="access.signin">登出</a>
+               	<a @click="logout">登出</a>
               </li>
             </ul>
             <!-- / dropdown -->
@@ -32,6 +28,12 @@
 	    userpic () {
 	    	return this.$store.state.login.custom.role === 'ADMIN' ? '/static/img/b4.jpg' : '/static/img/b18.jpg';
 	    }
-	  }
+	 	},
+	 	methods: {
+	 		logout () {
+	 			this.$store.dispatch('settoken', null);
+	 			this.$router.push({name: 'signin'});
+	 		}
+	 	}
 	}
 </script>

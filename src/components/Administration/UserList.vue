@@ -27,7 +27,7 @@
 
 <script>
 	import 'whatwg-fetch';
-	import { apiURL, checkStatus, parseJSON } from '../../../api/api';
+	import { apiURL, checkStatus, parseJSON, unauthorized } from '../../../api/api';
 	
 	export default {
 		data () {
@@ -52,10 +52,8 @@
 							})
 						})
 						.catch(error => {
-							this.$message({
-			          message: error,
-			          type: 'error'
-			       	});
+							// 用户名不合法 或 token 过期
+							unauthorized(error, this);
 					  	console.warn(error);
 					  })
 			},
@@ -83,10 +81,8 @@
 		          });
 						})
 						.catch(error => {
-							this.$message({
-			          message: error,
-			          type: 'error'
-			       	});
+							// 用户名不合法 或 token 过期
+							unauthorized(error, this);
 					  	console.warn(error);
 					 })
         }).catch(() => {

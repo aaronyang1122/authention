@@ -98,7 +98,7 @@
 	 },
 	 watch: {
 	 	'$route' (val, oldVal) {
-	 		console.log(val)
+//	 		console.log(val)
 			this.tags[val.name] = true;
 		}
 	 },

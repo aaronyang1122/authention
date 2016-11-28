@@ -20,12 +20,27 @@ const checkStatus = (response) => {
 }
 
 const parseJSON = (response) => {
-   return response.json();
+  return response.json();
+}
+
+const unauthorized = (e, context) => {
+	context = context || this;
+	if (e.status === 401) {
+		context.$message({
+      message: '认证失效请重新登录',
+      type: 'error',
+      onClose () {
+      	context.$store.dispatch('settoken', null);
+	 			context.$router.push({name: 'signin'});
+      }
+   	});
+	}
 }
 
 export {
 	toBase64,
 	apiURL,
 	checkStatus,
-	parseJSON
+	parseJSON,
+	unauthorized
 }

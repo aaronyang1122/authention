@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import { apiURL, checkStatus, parseJSON } from '../../api/api';
+	import { apiURL, checkStatus, parseJSON, unauthorized } from '../../api/api';
 	import 'whatwg-fetch';
 	
 	var changeElType = (el, binding) => {
@@ -82,10 +82,8 @@
 							this.successMSG();
 						})
 						.catch(error => {
-							this.$message({
-			          message: error,
-			          type: 'error'
-			        });
+							// 用户名不合法 或 token 过期
+							unauthorized(error, this);
 					  	console.warn(error);
 					  })
 			},

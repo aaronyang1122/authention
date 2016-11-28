@@ -6,7 +6,7 @@
 				<strong>后台管理系统</strong>
 			</div>
 			<form name="form" class="form-validation" @submit.prevent="submit">
-				<div class="text-danger wrapper text-center">{{message.error}}</div>
+				<!--<div class="text-danger wrapper text-center">{{message.error}}</div>-->
 				<div class="list-group list-group-sm">
 					<div class="list-group-item">
 						<match-box :clear-button="form.username.clear" :placeholder="form.username.placeholder" v-model="form.username.value" :required="true"></match-box>
@@ -22,12 +22,12 @@
 			<p>
 				<small class="text-muted">Web app framework base on Bootstrap and Vue<br>© 2016</small>
 			</p>
-		</div>
+		</div>   
 	</div>
 </template>
 <script>
 	import matchBox from './MatchBox';
-	import { toBase64, apiURL, checkStatus, parseJSON } from '../../api/api';
+	import { toBase64, apiURL, checkStatus, parseJSON, unauthorized } from '../../api/api';
 	import 'whatwg-fetch';
 	
 	export default {
@@ -46,20 +46,11 @@
 						clear: true,
 						type: 'password'
 					}
-				},
-				message: {
-					error: ''
 				}
 			}
 		},
 		components: {
 			matchBox
-		},
-		computed: {
-			isIE9 () {
-				// ie9 don't have the prop 'required'
-     		return !('required' in document.createElement('input'));
-     }
 		},
 		methods: {
 			handleValidate (e) {
@@ -77,9 +68,13 @@
     		// ie9
     		if (this.form.username.value === '' || this.form.password.value === '') {
     			// throw error
-    			this.message.error = '用户名、密码不能为空';
+//  			this.message.error = '用户名、密码不能为空';
+					this.$message({
+					  message: '用户名、密码不能为空',
+					  type: 'error'
+					});
     		} else {
-    			this.message.error = '';
+//  			this.message.error = '';
     			// 先获取 token 再获取用户资料信息
     			this.login()
     			.then(
@@ -122,11 +117,13 @@
 							resolve();
 						})
 						.catch(error => {
-					  	if (error.status === 401) {
-					  		this.message.error = '用户名密码错误，或账户不存在';
-					  	} else {
-					  		console.warn(error);
-					  	}
+							// 用户名不合法 或 token 过期
+							unauthorized(error, this);
+//					  	if (error.status === 401) {
+//					  		this.message.error = '用户名密码错误，或账户不存在';
+//					  	} else {
+//					  		console.warn(error);
+//					  	}
 					  	// reject
 					  	reject(error);
 					  })
@@ -147,7 +144,8 @@
 							resolve();
 						})
 	    			.catch(error => {
-	    				this.message.error = '获取用户信息错误';
+	    				unauthorized(error, this);
+//	    				this.message.error = '获取用户信息错误';
 					  	// reject
 					  	reject(error);
 					  })
