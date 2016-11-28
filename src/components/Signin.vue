@@ -3,7 +3,7 @@
 		<a href="" class="navbar-brand block m-t">登录</a>
 		<div class="m-b-lg">
 			<div class="wrapper text-center">
-				<strong>后台管理系统</strong>
+				<strong>手机令牌后台管理系统</strong>
 			</div>
 			<form name="form" class="form-validation" @submit.prevent="submit">
 				<!--<div class="text-danger wrapper text-center">{{message.error}}</div>-->
