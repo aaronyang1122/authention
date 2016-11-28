@@ -59,10 +59,11 @@
 						.then(checkStatus)
 						.then(parseJSON)
 						.then(data => {
+							console.log(data)
 							this.items.push(data)
 						})
 						.catch(error => {
-							if (/JSON/g.test(error.message)) {
+							if (/SyntaxError/gi.test(error.stack) || /SyntaxError/gi.test(error.name)) {
 								// 返回空对象 parseJSON 报错
 								this.$message({
 				          message: '查无此盛大ID',
