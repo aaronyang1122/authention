@@ -26,7 +26,7 @@
 	      return this.$store.state.login.custom.username
 	    },
 	    userpic () {
-	    	return this.$store.state.login.custom.role === 'ADMIN' ? '/static/img/b4.jpg' : '/static/img/b18.jpg';
+	    	return this.$store.state.login.custom.role === 'ADMIN' ? './static/img/b4.jpg' : './static/img/b18.jpg';
 	    }
 	 	},
 	 	methods: {
